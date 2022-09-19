@@ -1,0 +1,51 @@
+.loading-spinner-container{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);    
+}
+
+.table-container{
+    margin-top: 0.5rem;
+    padding: 0.8rem;
+    box-sizing: border-box;    
+}
+
+.text-center{
+    text-align: center;
+}
+
+.edit-icon{
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    margin-left: 5px;
+    margin-bottom: -5px;
+}
+
+.done-icon{
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    margin-top: 5px;
+}
+
+.heading-text{
+    font-weight:bold;
+    font-size: 18px;
+    color: #fff !important;
+    font-family: 'Manrope', sans-serif;
+}
+
+.heading-background{
+    background-color: #1a237e;
+    border: 1px solid #1a237e;
+}
+
+.blurText{
+    filter: blur(8px)
+}
+
+.pointer{
+    cursor: pointer;
+}

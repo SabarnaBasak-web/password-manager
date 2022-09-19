@@ -1,0 +1,27 @@
+.modalStyle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    background-color: #e0e0e0;
+    border: 2px solid #000;
+    box-sizing: border-box;   
+    padding: 1rem 1.2rem; 
+    border-radius: 10px;
+}
+
+.alert-text{
+    font-family: 'Manrope', sans-serif;
+    font-size: 18px;
+}
+
+.margin-3{
+    margin: 0rem 0.5rem !important;
+}
+
+.modal-heading{
+    text-align: center;
+    font-family: 'Manrope', sans-serif;
+    margin-top: 0.8rem;
+}

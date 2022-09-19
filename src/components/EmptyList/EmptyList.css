@@ -1,0 +1,29 @@
+.empty-container{
+    text-align: center;
+    margin: 0.4rem 0;        
+    padding:0.5rem; 
+    box-sizing: border-box;
+    color: #bdbdbd;
+}
+
+.empty-container-title{
+    font-family: 'Manrope', sans-serif;
+    font-size: 22px;
+    margin: 0; 
+}
+
+.empty-container-logo{
+    width: 50px !important;
+    height: 50px !important;
+    margin-top: 0.2rem;
+    margin-bottom: 0px;
+}
+
+.empty-container-description{
+    font-family: 'Manrope', sans-serif;
+    font-size: 16px;
+}
+
+.empty-container-span-icon{
+    margin-bottom: -6px ;
+}
