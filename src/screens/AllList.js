@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react'
+import React, { useEffect, useState, useCallback, } from 'react'
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -28,7 +28,7 @@ function AllList({refresh}) {
   const [showModal, setShowModal] = useState(false);
   const [rowId, setRowId] = useState('');
 
-  const {loading, list} = useSelector(state=> state.counterSlice);
+  const {loading, list} = useSelector(state=> state.passwordSlice);
   const dispatch =  useDispatch();
 
 
@@ -47,13 +47,13 @@ function AllList({refresh}) {
     setShowModal(false);
   }, [dispatch]);
 
-  const onDoneHandler = useCallback(async (docId, updateText, type) => {
+  const onDoneHandler = async (docId, updateText, type) => {
     dispatch(updateDetails({docId, updateText, type}));    
     setShouldEdit(false);    
     setInputText('');
     setRowId('');
     setShowPassword('');
-  }, [dispatch])
+  };
 
   // handler to render cancel button
   const onCancelHandler = ()=>{
@@ -61,14 +61,14 @@ function AllList({refresh}) {
   }
 
   // Render text or input field based on the condition 
-  const renderTextOrInputContent = useCallback((renderText, docId, type) => {     
+  const renderTextOrInputContent = (renderText, docId, type) => {     
     if (shouldEdit && type === inputField && rowId===docId ) {
       return (
         <>
           <TextField
             id={docId}
             variant="standard"
-            name={renderText}
+            name={type}
             value={inputText}
             placeholder={type === 'password' ? decryptText(renderText) : renderText }
             onChange={e => setInputText(e.target.value)} />
@@ -99,7 +99,7 @@ function AllList({refresh}) {
         {renderText}&nbsp;
         <EditIcon className='edit-icon' onClick={() => onEditButtonHandler(type,docId)} /> </>)
     }
-  }, [shouldEdit, inputText, onDoneHandler, inputField, showPassword, rowId]);
+  };
 
 
   const renderTableContent = (

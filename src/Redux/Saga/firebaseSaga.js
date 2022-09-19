@@ -1,7 +1,7 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
 import { getDocs, collection, doc, updateDoc, deleteDoc, setDoc } from 'firebase/firestore';
 import { database } from '../../firebase/firebaseConfig';
-import { fetchData } from '../Reducers/counterSlice';
+import { fetchData } from '../Reducers/passwordSlice';
 import { firebaseActions } from './firebaseActions';
 import { encryptText } from '../../Crypto/CryptoConfig';
 
@@ -31,8 +31,7 @@ const deletePasswordEntry = async (docId) => {
 }
 
 const createPasswordEntry = async ({ url, password, username, description }) => {
-    const newEntryRef = doc(collection(database, "password-lists"));
-    console.log("CreatePassword", url, password, username, description)
+    const newEntryRef = doc(collection(database, "password-lists"));    
     const encryptedPassword = encryptText(password);
     const createData = {
         url: url,
@@ -48,45 +47,40 @@ export function* fetchAllPasswordsSaga() {
     try {
         let result = yield call(() => {
             return getAllPasswords();
-        });
-        console.log("Data", result);
+        });        
         yield put(fetchData(result))
     }
     catch (error) {
-        console.log("Error", error);
+        console.warn("Error", error);
     }
 }
 
 
-export function* updateDetails({ payload }) {
-    console.log("Update details", payload);
+export function* updateDetails({ payload }) {    
     try {
-        const result = yield call(() => updatePasswordDetail(payload));
-        console.log("Result", result);
+        yield call(() => updatePasswordDetail(payload));        
         yield fetchAllPasswordsSaga();
     } catch (error) {
-        console.log("Some Error occured");
+        console.warn("Some Error occured");
     }
 }
 
 export function* deleteEntry({ payload }) {
     console.log("DocId", payload);
     try {
-        const result = yield call(() => deletePasswordEntry(payload))
-        console.log("Result", result);
+        yield call(() => deletePasswordEntry(payload))        
         yield fetchAllPasswordsSaga();
     } catch (err) {
-        console.log("Error", err)
+        console.warn("Error", err)
     }
 }
 
 export function* createEntry({payload}){
-    try{
-        console.log("Payload", payload);
+    try{        
         yield call(()=> createPasswordEntry(payload))
         yield fetchAllPasswordsSaga();
     }catch(err){
-        console.log('Error', err);
+        console.warn('Error', err);
     }
 }
 
