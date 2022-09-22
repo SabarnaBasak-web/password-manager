@@ -1,25 +1,17 @@
-import React, { useState } from 'react';
-import AllList from './screens/AllList';
+import React from 'react';
+import { Route, Routes } from 'react-router-dom';
 import './App.css';
-import AddItemButton from './components/AddButton/AddItemButton';
-import AddModal from './components/Modal/AddModal';
+import HomeScreen from './screens/HomeScreen';
+import Login from './screens/Login/Login';
+
 
 function App() {
-  const [showAddModal, setShowAddModal] = useState(false);
-  const onAddButtonHandler = () => {
-    setShowAddModal(true);
-  }
+
   return (
-    <>
-      <AllList/>
-      <AddItemButton onClickHandler={onAddButtonHandler} />
-      <AddModal
-        open={showAddModal}
-        handleClose={() => {
-          setShowAddModal(false);          
-        }}
-      />    
-    </>
+    <Routes>
+      {/* <Route path="/" exact element={<HomeScreen />} /> */}
+      <Route path="/" exact element={<Login />} />
+    </Routes>
   );
 }
 
