@@ -55,3 +55,19 @@
     margin: 0.8rem 0rem !important;
     text-transform: capitalize !important;
 }
+
+.error-message{
+    color: red;
+    font-family: 'Manrope' sans-serif;
+    font-size: 15px;
+    font-weight: bold;
+    margin-bottom: 0px;
+}
+
+.success-message{
+    color: olivedrab;
+    font-family: 'Manrope' sans-serif;
+    font-size: 15px;
+    font-weight: bold;
+    margin-bottom: 0px;
+}
