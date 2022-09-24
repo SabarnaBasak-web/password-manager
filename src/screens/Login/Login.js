@@ -2,32 +2,78 @@ import React, { useCallback, useState } from 'react';
 import './Login.css';
 import { TextField, Button } from '@mui/material';
 import GoogleIcon from '@mui/icons-material/Google';
+import { useDispatch, useSelector } from 'react-redux';
+import { signUpUserAction } from '../../Redux/Saga/firebaseActions';
 
 function Login() {
     const [renderType, setRenderType] = useState('login');
-    const [username, setUsername] = useState('');
+    const [userEmail, setUserEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [error, setError] = useState(false);
+    const [successMsg, setSuccessMsg] = useState(false);
+    const dispatch = useDispatch();
+    const errorMsg = useSelector(state => state.passwordSlice.error);
+    const user = useSelector(state => state.passwordSlice.user);
 
     const onClickHandler = (type) => {
         setRenderType(type);
     }
 
-    const createAccountHandler = () => {
-        console.log('Create account');
+    const resetFormHandler = () => {
+        setUserEmail('');
+        setPassword('');
+        setConfirmPassword('');
+    }
+    const validateFormHandler = useCallback(() => {
+        const regex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
+        if (!regex.test(userEmail) || password.length < 6 || password !== confirmPassword) {
+            setError(true);
+            return false;
+        }
+        return true;
+    }, [userEmail, password, confirmPassword]);
+
+    const createAccountHandler = useCallback(() => {
+        if (error) {
+            setError(false);
+        }
+        if (validateFormHandler()) {
+            dispatch(signUpUserAction({ userEmail, password }));
+            if (user) {
+                setSuccessMsg(true);
+                setTimeout(() => {
+                    setSuccessMsg(false);
+                    setRenderType('login');
+                    resetFormHandler()
+                }, 4000);
+            } else if (errorMsg) {
+                setError(true);
+            }
+        }
+    }, [dispatch, userEmail, error, errorMsg, user, password, validateFormHandler])
+
+    const loginAccountHandler = () => {
+        console.log("Login Account handler");
     }
 
     const renderComponent = useCallback(() => (
         <div className='login-content-container'>
+            {error && <p className='error-message'>Incorrect email type or password length is less than 6 or passwords don't match</p>}
+            {
+                successMsg &&
+                <p className='success-message'>
+                    User Account has been created! You will be redirected to Login page after few seconds
+                </p>}
             {renderType === 'SignUp' ? (<form className='form-container'>
                 <TextField
-                    id="username"
+                    id="email"
                     variant="standard"
-                    type='text'
-                    name='username'
-                    label='Username'
-                    value={username}
-                    onChange={e => setUsername(e.target.value)}
+                    type='email'
+                    name='Email'
+                    label='Email'
+                    value={userEmail}
+                    onChange={e => setUserEmail(e.target.value)}
                     style={{ marginTop: 20, width: '100%' }}
                 />
                 <TextField
@@ -67,8 +113,8 @@ function Login() {
                             type='text'
                             name='username'
                             label='Username'
-                            value={username}
-                            onChange={e => setUsername(e.target.value)}
+                            value={userEmail}
+                            onChange={e => setUserEmail(e.target.value)}
                             style={{ marginTop: 20, width: '100%' }}
                         />
                         <TextField
@@ -85,7 +131,7 @@ function Login() {
                             color="primary"
                             variant='outlined'
                             className="margin-3"
-                            onClick={createAccountHandler}
+                            onClick={loginAccountHandler}
                         >
                             Login
                         </Button>
@@ -101,7 +147,13 @@ function Login() {
                 </>
             )}
         </div>
-    ), [renderType, confirmPassword, password, username]);
+    ), [renderType,
+        confirmPassword,
+        password,
+        userEmail,
+        error,
+        createAccountHandler,
+        successMsg]);
 
     return (
         <div className='login-card'>
