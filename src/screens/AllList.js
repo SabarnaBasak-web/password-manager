@@ -14,13 +14,12 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import './AllListStyle.css';
 import DoneIcon from '@mui/icons-material/Done';
 import AlertModal from '../components/Modal/AlertModal';
-import { decryptText } from '../Crypto/CryptoConfig';
 import CloseIcon from '@mui/icons-material/Close';
 import EmptyList from '../components/EmptyList/EmptyList';
-import {useDispatch, useSelector} from 'react-redux';
-import {firebaseActions, updateDetails, deletePasswordEntry} from '../Redux/Saga/firebaseActions';
+import { useDispatch, useSelector } from 'react-redux';
+import { firebaseActions, updateDetails, deletePasswordEntry } from '../Redux/Saga/Firebase/firebaseActions';
 
-function AllList({refresh}) {
+function AllList({ refresh }) {
   const [shouldEdit, setShouldEdit] = useState(false);
   const [inputText, setInputText] = useState('');
   const [inputField, setInputField] = useState('');
@@ -28,13 +27,13 @@ function AllList({refresh}) {
   const [showModal, setShowModal] = useState(false);
   const [rowId, setRowId] = useState('');
 
-  const {loading, list} = useSelector(state=> state.passwordSlice);
-  const dispatch =  useDispatch();
+  const { loading, list } = useSelector(state => state.passwordSlice);
+  const dispatch = useDispatch();
 
 
-  useEffect(()=>{
+  useEffect(() => {
     dispatch({ type: firebaseActions.FETCH_ALL_PASSWORDS })
-  },[dispatch]);
+  }, [dispatch]);
 
   const onEditButtonHandler = (type, docId) => {
     setShouldEdit(true);
@@ -42,27 +41,27 @@ function AllList({refresh}) {
     setRowId(docId)
   }
 
-  const onDeleteButtonHandler = useCallback(async (docId) => {         
+  const onDeleteButtonHandler = useCallback(async (docId) => {
     dispatch(deletePasswordEntry(docId));
     setShowModal(false);
   }, [dispatch]);
 
   const onDoneHandler = async (docId, updateText, type) => {
-    dispatch(updateDetails({docId, updateText, type}));    
-    setShouldEdit(false);    
+    dispatch(updateDetails({ docId, updateText, type }));
+    setShouldEdit(false);
     setInputText('');
     setRowId('');
     setShowPassword('');
   };
 
   // handler to render cancel button
-  const onCancelHandler = ()=>{
+  const onCancelHandler = () => {
     setShouldEdit(false)
   }
 
   // Render text or input field based on the condition 
-  const renderTextOrInputContent = (renderText, docId, type) => {     
-    if (shouldEdit && type === inputField && rowId===docId ) {
+  const renderTextOrInputContent = (renderText, docId, type) => {
+    if (shouldEdit && type === inputField && rowId === docId) {
       return (
         <>
           <TextField
@@ -70,7 +69,7 @@ function AllList({refresh}) {
             variant="standard"
             name={type}
             value={inputText}
-            placeholder={type === 'password' ? decryptText(renderText) : renderText }
+            placeholder={renderText}
             onChange={e => setInputText(e.target.value)} />
           <DoneIcon className='done-icon' onClick={() => onDoneHandler(docId, inputText, type)} />
           <CloseIcon className='pointer' onClick={onCancelHandler} />
@@ -81,15 +80,15 @@ function AllList({refresh}) {
       if (type === 'password') {
         return (
           <>
-            <span className={(showPassword !== docId) ? 'blurText' : ''}>{decryptText(renderText)}</span>
+            <span className={(showPassword !== docId) ? 'blurText' : ''}>{renderText}</span>
             <VisibilityIcon className='edit-icon' onClick={() => {
-              setShowPassword(prevValue => {                
-                if(!prevValue){                  
+              setShowPassword(prevValue => {
+                if (!prevValue) {
                   return docId
-                } else{
+                } else {
                   return ''
                 }
-              })              
+              })
             }} />
             <EditIcon className='edit-icon' onClick={() => onEditButtonHandler(type, docId)} />
           </>
@@ -97,7 +96,7 @@ function AllList({refresh}) {
       }
       return (<>
         {renderText}&nbsp;
-        <EditIcon className='edit-icon' onClick={() => onEditButtonHandler(type,docId)} /> </>)
+        <EditIcon className='edit-icon' onClick={() => onEditButtonHandler(type, docId)} /> </>)
     }
   };
 
@@ -106,7 +105,7 @@ function AllList({refresh}) {
     <div className='table-container'>
       <h1 className='text-center'>All Password list</h1>
       <TableContainer component={Paper}>
-        <Table  size="small" aria-label="a dense table">
+        <Table size="small" aria-label="a dense table">
           <TableHead>
             <TableRow className='heading-background'>
               <TableCell align="center" className='heading-text'>Sr No.</TableCell>
@@ -118,28 +117,28 @@ function AllList({refresh}) {
 
             </TableRow>
           </TableHead>
-          <TableBody>            
-            {!!list.length ? 
-            list?.map((row, index) => (
-             
-              <TableRow
-                key={row.id}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-              >
-                <TableCell align="center">{index + 1}</TableCell>
-                <TableCell align="center"> {renderTextOrInputContent(row.url, row.id, 'url')}</TableCell>
-                <TableCell align="center">{renderTextOrInputContent(row.username, row.id, 'username')}</TableCell>
-                <TableCell align="center">{renderTextOrInputContent(row.password, row.id, 'password')}</TableCell>
-                <TableCell align="center">{renderTextOrInputContent(row.description, row.id, 'description')}</TableCell>
-                <TableCell align="center">
-                  <DeleteIcon onClick={()=> {setShowModal(true); setRowId(row.id)}} className='pointer' />
-                </TableCell>
-              </TableRow>
-              )):
-            //Render Empty component
-            <TableRow>
-                <TableCell colSpan={6}> <EmptyList/></TableCell>
-            </TableRow>}
+          <TableBody>
+            {!!list.length ?
+              list?.map((row, index) => (
+
+                <TableRow
+                  key={row.id}
+                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                >
+                  <TableCell align="center">{index + 1}</TableCell>
+                  <TableCell align="center"> {renderTextOrInputContent(row.url, row.id, 'url')}</TableCell>
+                  <TableCell align="center">{renderTextOrInputContent(row.username, row.id, 'username')}</TableCell>
+                  <TableCell align="center">{renderTextOrInputContent(row.password, row.id, 'password')}</TableCell>
+                  <TableCell align="center">{renderTextOrInputContent(row.description, row.id, 'description')}</TableCell>
+                  <TableCell align="center">
+                    <DeleteIcon onClick={() => { setShowModal(true); setRowId(row.id) }} className='pointer' />
+                  </TableCell>
+                </TableRow>
+              )) :
+              //Render Empty component
+              <TableRow>
+                <TableCell colSpan={6}> <EmptyList /></TableCell>
+              </TableRow>}
           </TableBody>
         </Table>
       </TableContainer>
@@ -154,14 +153,14 @@ function AllList({refresh}) {
     )
   }
   return (
-    loading ? 
-      renderLoadingIndicator() 
-      : <>        
-        {renderTableContent} 
-        <AlertModal 
-          open={showModal} 
-          handleClose={()=> setShowModal(false)} 
-          deleteRowHandler= {()=>onDeleteButtonHandler(rowId)}
+    loading ?
+      renderLoadingIndicator()
+      : <>
+        {renderTableContent}
+        <AlertModal
+          open={showModal}
+          handleClose={() => setShowModal(false)}
+          deleteRowHandler={() => onDeleteButtonHandler(rowId)}
         />
       </>
   )

@@ -1,10 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { decryptText } from '../../Crypto/CryptoConfig';
 
 const initialState = {
   list: [],
   loading: true,
-  user: {},
-  error: '',
 }
 
 export const passwordSlice = createSlice({
@@ -12,31 +11,22 @@ export const passwordSlice = createSlice({
   initialState,
   reducers: {
     fetchData: (state, action) => {
+      const data = action.payload;
+      const updatedData = data.map(item => {
+        const { password, ...rest } = item;
+        const decrptPassword = decryptText(password);
+        return { ...rest, password: decrptPassword };
+      });
       return {
-        list: action.payload,
+        ...state,
+        list: updatedData,
         loading: false
       }
     },
-    setUser: (state, action) => {
-      return {
-        user: action.payload
-      }
-    },
-    setErrorMsg: (state, action) => {
-      return {
-        error: action.payload
-      }
-    },
-    getUser: (state) => {
-      return state.user;
-    },
-    getErrorMsg: (state) => {
-      return state.error;
-    }
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { fetchData, setUser, setErrorMsg } = passwordSlice.actions
+export const { fetchData } = passwordSlice.actions
 
 export default passwordSlice.reducer
