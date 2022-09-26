@@ -15,7 +15,6 @@ const createUserAccount = async ({ userEmail, password }) => {
 export function* signUpUser({ payload }) {
     try {
         let result = yield call(() => createUserAccount(payload));
-        console.log("Result", result);
         yield put(setUserCreated(result));
     } catch (err) {
         console.warn('Error', err);
