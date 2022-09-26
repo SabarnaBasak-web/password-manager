@@ -16,7 +16,6 @@ function Login() {
     const errorMsg = useSelector(state => state.userSlice.error);
     const [userCreated, setUserCreated] = useState(false);
     const isUserCreated = useSelector(state => state.userSlice.userCreated)
-    console.log("User Created", userCreated);
 
     const onClickHandler = (type) => {
         setRenderType(type);
@@ -49,7 +48,6 @@ function Login() {
         if (validateFormHandler()) {
             dispatch(signUpUserAction({ userEmail, password }));
             if (userCreated) {
-                console.log("Inside userCreated if ");
                 setSuccessMsg(true);
                 setTimeout(() => {
                     setSuccessMsg(false);
