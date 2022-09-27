@@ -21,9 +21,31 @@ function Login() {
         setRenderType(type);
     }
 
+    const onSignUpSuccessHandler = useCallback(()=>{
+        console.log("UseCallback called");
+        if(isUserCreated){
+            console.log("createaccount", userCreated)
+            setSuccessMsg(true);
+            setTimeout(() => {
+                setSuccessMsg(false);
+                setRenderType('login');
+                resetFormHandler()
+            }, 4000);
+        }
+        // else{
+        //     if (userCreated) {
+               
+        //     } else if (errorMsg) {
+        //         setError(true);
+        //     }
+        // }
+    },[isUserCreated])
     // set the state to re-render the component to show the success or error modal after creating new user. 
     useEffect(() => {
-        if (isUserCreated) setUserCreated(isUserCreated);
+        console.log("login.js",isUserCreated)
+        if (isUserCreated) 
+            setUserCreated(isUserCreated);
+            onSignUpSuccessHandler();
     }, [userCreated, isUserCreated])
 
     const resetFormHandler = () => {
@@ -47,18 +69,9 @@ function Login() {
         }
         if (validateFormHandler()) {
             dispatch(signUpUserAction({ userEmail, password }));
-            if (userCreated) {
-                setSuccessMsg(true);
-                setTimeout(() => {
-                    setSuccessMsg(false);
-                    setRenderType('login');
-                    resetFormHandler()
-                }, 4000);
-            } else if (errorMsg) {
-                setError(true);
-            }
+            console.log("createaccount", userCreated)
         }
-    }, [dispatch, userEmail, error, errorMsg, userCreated, password, validateFormHandler])
+    }, [dispatch, userEmail, password, validateFormHandler])
 
     const loginAccountHandler = () => {
         console.log("Login Account handler");

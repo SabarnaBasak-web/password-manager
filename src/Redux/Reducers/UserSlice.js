@@ -28,12 +28,6 @@ export const userSlice = createSlice({
                 error: action.payload
             }
         },
-        isUserCreated: (state) => {
-            return state.userCreated;
-        },
-        getErrorMsg: (state) => {
-            return state.error;
-        }
     }
 });
 
