@@ -1,18 +1,9 @@
-import { call, put, takeEvery } from 'redux-saga/effects';
+import { call, put } from 'redux-saga/effects';
 import { getDocs, collection, doc, updateDoc, deleteDoc, setDoc } from 'firebase/firestore';
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { database } from '../../firebase/firebaseConfig';
-import { fetchData, setUser, setErrorMsg } from '../Reducers/passwordSlice';
-import { firebaseActions } from './firebaseActions';
-import { encryptText } from '../../Crypto/CryptoConfig';
 
-// functions related to user creation and login to the app
-const createUserAccount = async ({ userEmail, password }) => {
-    const auth = getAuth();
-    const response = await createUserWithEmailAndPassword(auth, userEmail, password);
-    const user = response.user;
-    return user;
-}
+import { database } from '../../../firebase/firebaseConfig';
+import { fetchData } from '../../Reducers/passwordSlice';
+import { encryptText } from '../../../Crypto/CryptoConfig';
 
 // function related to firestore 
 const getAllPasswords = async () => {
@@ -93,21 +84,6 @@ export function* createEntry({ payload }) {
     }
 }
 
-// User signIn and signUp 
-export function* signUpUser({ payload }) {
-    try {
-        let result = yield call(() => createUserAccount(payload));
-        yield put(setUser(result));
-    } catch (err) {
-        console.warn('Error', err);
-        yield put(setErrorMsg('Unable to create account'));
-    }
-}
 
-export default function* rootSaga() {
-    yield takeEvery(firebaseActions.FETCH_ALL_PASSWORDS, fetchAllPasswordsSaga);
-    yield takeEvery(firebaseActions.UPDATE_A_PASSWORD, updateDetails);
-    yield takeEvery(firebaseActions.DELETE_A_PASSWORD, deleteEntry);
-    yield takeEvery(firebaseActions.CREATE_A_PASSWORD, createEntry);
-    yield takeEvery(firebaseActions.CREATE_USER, signUpUser);
-}
+
+

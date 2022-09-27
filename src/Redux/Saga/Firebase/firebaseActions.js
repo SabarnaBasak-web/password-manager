@@ -3,7 +3,6 @@ export const firebaseActions = {
     CREATE_A_PASSWORD: 'CREATE_A_PASSWORD',
     UPDATE_A_PASSWORD: 'UPDATE_A_PASSWORD',
     DELETE_A_PASSWORD: 'DELETE_A_PASSWORD',
-    CREATE_USER: 'CREATE_USER'
 }
 
 export const updateDetails = (payload) => ({
@@ -20,8 +19,3 @@ export const createPasswordEntry = (payload) => ({
     type: firebaseActions.CREATE_A_PASSWORD,
     payload,
 });
-
-export const signUpUserAction = (payload) => ({
-    type: firebaseActions.CREATE_USER,
-    payload
-})

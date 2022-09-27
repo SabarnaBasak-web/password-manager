@@ -4,7 +4,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import CheckIcon from '@mui/icons-material/Check';
 import './AlertModal.css';
 import { useDispatch } from 'react-redux';
-import { createPasswordEntry } from '../../Redux/Saga/firebaseActions';
+import { createPasswordEntry } from '../../Redux/Saga/Firebase/firebaseActions';
 
 function AddModal({ open, handleClose, createItemHandler }) {
     const [url, setUrl] = useState('');
@@ -13,22 +13,22 @@ function AddModal({ open, handleClose, createItemHandler }) {
     const [description, setDescription] = useState('');
     const dispatch = useDispatch();
 
-    const resetStates = ()=>{
+    const resetStates = () => {
         setUrl('');
         setDescription('');
         setPassword('');
         setUsername('');
     }
-    
-    const createEntryHandler = async ()=>{        
-        dispatch(createPasswordEntry({url, password, username, description}))
+
+    const createEntryHandler = async () => {
+        dispatch(createPasswordEntry({ url, password, username, description }))
         resetStates();
         handleClose();
     }
 
     return (
         <Modal
-            open={open}            
+            open={open}
             aria-labelledby="create-password-modal"
             aria-describedby="create-password-modal"
         >
@@ -62,7 +62,7 @@ function AddModal({ open, handleClose, createItemHandler }) {
                             value={password}
                             onChange={e => setPassword(e.target.value)}
                             style={{ marginTop: 20 }}
-                        />                        
+                        />
                         <TextField
                             id="description"
                             variant="standard"
@@ -72,7 +72,7 @@ function AddModal({ open, handleClose, createItemHandler }) {
                             onChange={e => setDescription(e.target.value)}
                             style={{ marginTop: 20 }}
                         />
-                        <div style={{marginTop: 20}}>
+                        <div style={{ marginTop: 20 }}>
                             <Button
                                 color="error"
                                 variant='outlined'
