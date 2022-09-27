@@ -1,9 +1,9 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import './Login.css';
 import { TextField, Button } from '@mui/material';
 import GoogleIcon from '@mui/icons-material/Google';
 import { useDispatch, useSelector } from 'react-redux';
-import { signUpUserAction } from '../../Redux/Saga/firebaseActions';
+import { signUpUserAction } from '../../Redux/Saga/User/UserActions';
 
 function Login() {
     const [renderType, setRenderType] = useState('login');
@@ -13,12 +13,40 @@ function Login() {
     const [error, setError] = useState(false);
     const [successMsg, setSuccessMsg] = useState(false);
     const dispatch = useDispatch();
-    const errorMsg = useSelector(state => state.passwordSlice.error);
-    const user = useSelector(state => state.passwordSlice.user);
+    const errorMsg = useSelector(state => state.userSlice.error);
+    const [userCreated, setUserCreated] = useState(false);
+    const isUserCreated = useSelector(state => state.userSlice.userCreated)
 
     const onClickHandler = (type) => {
         setRenderType(type);
     }
+
+    const onSignUpSuccessHandler = useCallback(()=>{
+        console.log("UseCallback called");
+        if(isUserCreated){
+            console.log("createaccount", userCreated)
+            setSuccessMsg(true);
+            setTimeout(() => {
+                setSuccessMsg(false);
+                setRenderType('login');
+                resetFormHandler()
+            }, 4000);
+        }
+        // else{
+        //     if (userCreated) {
+               
+        //     } else if (errorMsg) {
+        //         setError(true);
+        //     }
+        // }
+    },[isUserCreated])
+    // set the state to re-render the component to show the success or error modal after creating new user. 
+    useEffect(() => {
+        console.log("login.js",isUserCreated)
+        if (isUserCreated) 
+            setUserCreated(isUserCreated);
+            onSignUpSuccessHandler();
+    }, [userCreated, isUserCreated])
 
     const resetFormHandler = () => {
         setUserEmail('');
@@ -35,23 +63,15 @@ function Login() {
     }, [userEmail, password, confirmPassword]);
 
     const createAccountHandler = useCallback(() => {
+        console.log("Created account handler called")
         if (error) {
             setError(false);
         }
         if (validateFormHandler()) {
             dispatch(signUpUserAction({ userEmail, password }));
-            if (user) {
-                setSuccessMsg(true);
-                setTimeout(() => {
-                    setSuccessMsg(false);
-                    setRenderType('login');
-                    resetFormHandler()
-                }, 4000);
-            } else if (errorMsg) {
-                setError(true);
-            }
+            console.log("createaccount", userCreated)
         }
-    }, [dispatch, userEmail, error, errorMsg, user, password, validateFormHandler])
+    }, [dispatch, userEmail, password, validateFormHandler])
 
     const loginAccountHandler = () => {
         console.log("Login Account handler");
