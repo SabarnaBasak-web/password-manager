@@ -3,7 +3,7 @@ import './Login.css';
 import { TextField, Button } from '@mui/material';
 import GoogleIcon from '@mui/icons-material/Google';
 import { useDispatch, useSelector } from 'react-redux';
-import { signUpUserAction } from '../../Redux/Saga/User/UserActions';
+import { signUpUserAction, signInUserAction } from '../../Redux/Saga/User/UserActions';
 
 function Login() {
     const [renderType, setRenderType] = useState('login');
@@ -11,11 +11,12 @@ function Login() {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState(false);
-    const [successMsg, setSuccessMsg] = useState(false);
+    const [successMsg, setSuccessMsg] = useState('');
     const dispatch = useDispatch();
     const errorMsg = useSelector(state => state.userSlice.error);
     const [userCreated, setUserCreated] = useState(false);
     const isUserCreated = useSelector(state => state.userSlice.userCreated)
+    const loggedUser = useSelector(state => state.userSlice.user)
 
     const onClickHandler = (type) => {
         setRenderType(type);
@@ -25,9 +26,9 @@ function Login() {
         console.log("UseCallback called");
         if(isUserCreated){
             console.log("createaccount", userCreated)
-            setSuccessMsg(true);
+            setSuccessMsg('User Account has been created! You will be redirected to Login page after few seconds');
             setTimeout(() => {
-                setSuccessMsg(false);
+                setSuccessMsg('');
                 setRenderType('login');
                 resetFormHandler()
             }, 4000);
@@ -75,6 +76,12 @@ function Login() {
 
     const loginAccountHandler = () => {
         console.log("Login Account handler");
+        dispatch(signInUserAction({ userEmail, password }));
+        console.log(loggedUser)
+        if (loggedUser) {
+            setSuccessMsg('Login successfull');
+            resetFormHandler()
+        }
     }
 
     const renderComponent = useCallback(() => (
@@ -83,7 +90,7 @@ function Login() {
             {
                 successMsg &&
                 <p className='success-message'>
-                    User Account has been created! You will be redirected to Login page after few seconds
+                    {successMsg}
                 </p>}
             {renderType === 'SignUp' ? (<form className='form-container'>
                 <TextField
