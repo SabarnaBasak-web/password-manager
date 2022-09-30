@@ -8,7 +8,6 @@ const createUserAccount = async ({ userEmail, password }) => {
     const auth = getAuth();
     const response = await createUserWithEmailAndPassword(auth, userEmail, password);
     const user = response.user;
-    console.log("[FirebaseSaga] user ", user);
     return !!user.uid;
 }
 
@@ -16,7 +15,6 @@ const signInUserAccount = async ({ userEmail, password }) => {
     const auth = getAuth();
     const response = await signInWithEmailAndPassword(auth, userEmail, password);
     const user = response.user;
-    console.log("[FirebaseSaga] logged user ", user);
     return user.email;
 }
 // User signIn and signUp 
