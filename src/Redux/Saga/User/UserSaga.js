@@ -11,7 +11,6 @@ const createUserAccount = async ({ userEmail, password }) => {
         const user = response.user;
         return { isError: false, isUserCreated: !!user.uid };
     } catch (error) {
-        console.log("Error", error.message);
         if (error.message.includes('email-already-in-use'))
             return { isError: true, message: 'Email already in use' }
     }
@@ -22,7 +21,6 @@ const signInUserAccount = async ({ userEmail, password }) => {
     try {
         const response = await signInWithEmailAndPassword(auth, userEmail, password);
         const user = response.user;
-        console.log("User", user);
         return {
             id: user.uid,
             email: user.email,
@@ -40,7 +38,6 @@ const signInUserAccount = async ({ userEmail, password }) => {
 
 const logoutUser = async () => {
     const auth = getAuth();
-    console.log("LogOut User", auth);
     await signOut(auth);
     return true;
 }
@@ -80,7 +77,6 @@ export function* logout() {
             yield put(setUser({}))
         }
     } catch (err) {
-        console.warn("Error something went wrong!!");
         yield put(setErrorMsg("Error while logging out "))
     }
 }
