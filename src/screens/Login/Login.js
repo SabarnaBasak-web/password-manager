@@ -18,7 +18,6 @@ function Login() {
     const isUserCreated = useSelector(state => state.userSlice.userCreated)
     const loggedUser = useSelector(state => state.userSlice.user)
 
-    console.log('ErrorMsg', errorMsg);
     const onClickHandler = (type) => {
         setRenderType(type);
     }
