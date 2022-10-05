@@ -19,7 +19,7 @@ import EmptyList from '../components/EmptyList/EmptyList';
 import { useDispatch, useSelector } from 'react-redux';
 import { firebaseActions, updateDetails, deletePasswordEntry } from '../Redux/Saga/Firebase/firebaseActions';
 
-function AllList({ refresh }) {
+function AllList() {
   const [shouldEdit, setShouldEdit] = useState(false);
   const [inputText, setInputText] = useState('');
   const [inputField, setInputField] = useState('');
@@ -29,7 +29,6 @@ function AllList({ refresh }) {
 
   const { loading, list } = useSelector(state => state.passwordSlice);
   const dispatch = useDispatch();
-
 
   useEffect(() => {
     dispatch({ type: firebaseActions.FETCH_ALL_PASSWORDS })
