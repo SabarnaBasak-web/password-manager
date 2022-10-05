@@ -5,10 +5,16 @@ import { setUserCreated, setErrorMsg, setUser } from "../../Reducers/UserSlice";
 
 // functions related to user creation and login to the app
 const createUserAccount = async ({ userEmail, password }) => {
-    const auth = getAuth();
-    const response = await createUserWithEmailAndPassword(auth, userEmail, password);
-    const user = response.user;
-    return !!user.uid;
+    try {
+        const auth = getAuth();
+        const response = await createUserWithEmailAndPassword(auth, userEmail, password);
+        const user = response.user;
+        return { isError: false, isUserCreated: !!user.uid };
+    } catch (error) {
+        console.log("Error", error.message);
+        if (error.message.includes('email-already-in-use'))
+            return { isError: true, message: 'Email already in use' }
+    }
 }
 
 const signInUserAccount = async ({ userEmail, password }) => {
