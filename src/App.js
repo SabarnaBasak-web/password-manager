@@ -2,17 +2,17 @@ import React from 'react';
 import './App.css';
 import HomeScreen from './screens/HomeScreen';
 import Login from './screens/Login/Login';
-import {useSelector} from 'react-redux'
+import { useSelector } from 'react-redux'
+
 
 
 function App() {
-  const loggedUser = useSelector(state => state.userSlice.user) 
-
+  const loggedUser = useSelector(state => state.userSlice.user)
   return (
     <div>
-      {loggedUser
+      {loggedUser && Object.keys(loggedUser).length
         ? <HomeScreen />
-        : <Login/>
+        : <Login />
       }
     </div>
   );

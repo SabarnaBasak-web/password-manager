@@ -22,8 +22,8 @@ function Login() {
         setRenderType(type);
     }
 
-    const onSignUpSuccessHandler = useCallback(()=>{
-        if(isUserCreated){
+    const onSignUpSuccessHandler = useCallback(() => {
+        if (isUserCreated) {
             setSuccessMsg('User Account has been created! You will be redirected to Login page after few seconds');
             setTimeout(() => {
                 setSuccessMsg('');
@@ -31,13 +31,13 @@ function Login() {
                 resetFormHandler()
             }, 4000);
         }
-    },[isUserCreated])
+    }, [isUserCreated])
     // set the state to re-render the component to show the success or error modal after creating new user. 
     useEffect(() => {
-        if (isUserCreated) 
+        if (isUserCreated)
             setUserCreated(isUserCreated);
-            onSignUpSuccessHandler();
-    }, [userCreated, isUserCreated])
+        onSignUpSuccessHandler();
+    }, [userCreated, isUserCreated, onSignUpSuccessHandler])
 
     const resetFormHandler = () => {
         setUserEmail('');
@@ -60,15 +60,15 @@ function Login() {
         if (validateFormHandler()) {
             dispatch(signUpUserAction({ userEmail, password }));
         }
-    }, [dispatch, userEmail, password, validateFormHandler])
+    }, [error, validateFormHandler, dispatch, userEmail, password])
 
-    const loginAccountHandler = () => {
+    const loginAccountHandler = useCallback(() => {
         dispatch(signInUserAction({ userEmail, password }));
         if (loggedUser) {
             setSuccessMsg('Login successfull');
             resetFormHandler()
         }
-    }
+    }, [dispatch, loggedUser, password, userEmail])
 
     const renderComponent = useCallback(() => (
         <div className='login-content-container'>
@@ -160,13 +160,7 @@ function Login() {
                 </>
             )}
         </div>
-    ), [renderType,
-        confirmPassword,
-        password,
-        userEmail,
-        error,
-        createAccountHandler,
-        successMsg]);
+    ), [error, successMsg, renderType, userEmail, password, confirmPassword, createAccountHandler, loginAccountHandler]);
 
     return (
         <div className='login-card'>
