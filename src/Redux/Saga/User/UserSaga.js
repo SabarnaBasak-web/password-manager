@@ -13,13 +13,22 @@ const createUserAccount = async ({ userEmail, password }) => {
 
 const signInUserAccount = async ({ userEmail, password }) => {
     const auth = getAuth();
-    const response = await signInWithEmailAndPassword(auth, userEmail, password);
-    const user = response.user;
-    console.log("User", user);
-    return {
-        id: user.uid,
-        email: user.email,
-        displayName: user.displayName
+    try {
+        const response = await signInWithEmailAndPassword(auth, userEmail, password);
+        const user = response.user;
+        console.log("User", user);
+        return {
+            id: user.uid,
+            email: user.email,
+            displayName: user.displayName,
+            isLoggedIn: true,
+        }
+    } catch (error) {
+        if (error.message.includes('wrong-password'))
+            return {
+                isLoggedIn: false,
+                message: "incorrect username or password",
+            }
     }
 }
 
@@ -46,9 +55,13 @@ export function* signUpUser({ payload }) {
 export function* signInUser({ payload }) {
     try {
         let result = yield call(() => signInUserAccount(payload));
-        yield put(setUser(result));
+        const { isLoggedIn, ...rest } = result;
+        if (isLoggedIn) {
+            yield put(setUser(rest));
+        } else {
+            yield put(setErrorMsg(rest))
+        }
     } catch (err) {
-        console.warn('Error', err);
         yield put(setErrorMsg('Unable to logging account'));
     }
 }
