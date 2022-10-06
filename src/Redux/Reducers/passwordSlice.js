@@ -23,7 +23,7 @@ export const passwordSlice = createSlice({
         loading: false
       }
     },
-    clearData: (state, action) => {
+    clearData: (state) => {
       return {
         ...state,
         list: [],
