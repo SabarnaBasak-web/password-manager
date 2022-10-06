@@ -22,6 +22,7 @@ function Login() {
         setRenderType(type);
     }
 
+
     const onSignUpSuccessHandler = useCallback(() => {
         if (isUserCreated) {
             setSuccessMsg('User Account has been created! You will be redirected to Login page after few seconds');
@@ -64,7 +65,7 @@ function Login() {
 
     const loginAccountHandler = useCallback(() => {
         dispatch(signInUserAction({ userEmail, password }));
-        if (loggedUser) {
+        if (Object.entries(loggedUser).length) {
             setSuccessMsg('Login successfull');
             resetFormHandler()
         }
@@ -73,6 +74,7 @@ function Login() {
     const renderComponent = useCallback(() => (
         <div className='login-content-container'>
             {error && <p className='error-message'>Incorrect email type or password length is less than 6 or passwords don't match</p>}
+            {Object.entries(errorMsg).length ? <p className='error-message'>{errorMsg?.message}  </p> : <></>}
             {
                 successMsg &&
                 <p className='success-message'>
@@ -160,7 +162,7 @@ function Login() {
                 </>
             )}
         </div>
-    ), [error, successMsg, renderType, userEmail, password, confirmPassword, createAccountHandler, loginAccountHandler]);
+    ), [error, errorMsg, successMsg, renderType, userEmail, password, confirmPassword, createAccountHandler, loginAccountHandler]);
 
     return (
         <div className='login-card'>

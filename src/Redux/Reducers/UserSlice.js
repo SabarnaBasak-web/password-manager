@@ -11,9 +11,17 @@ export const userSlice = createSlice({
     initialState,
     reducers: {
         setUserCreated: (state, action) => {
-            return {
-                ...state,
-                userCreated: action.payload,
+            if (!action.payload.isError) {
+                return {
+                    ...state,
+                    userCreated: action.payload.isUserCreated,
+                }
+            } else {
+                return {
+                    ...state,
+                    error: { message: action.payload.message },
+                    userCreated: action.payload.isUserCreated
+                }
             }
         },
         setUser: (state, action) => {
