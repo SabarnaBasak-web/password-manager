@@ -94,6 +94,14 @@ function AllList() {
           </>
         )
       }
+      else if (type === 'url') {
+        return (
+          <>
+            <a href={renderText} target='_blank' className='url-link' rel="noreferrer">{renderText}</a>
+            <EditIcon className='edit-icon' onClick={() => onEditButtonHandler(type, docId)} />
+          </>
+        )
+      }
       return (<>
         {renderText}&nbsp;
         <EditIcon className='edit-icon' onClick={() => onEditButtonHandler(type, docId)} /> </>)

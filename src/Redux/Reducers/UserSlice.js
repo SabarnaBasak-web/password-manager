@@ -31,6 +31,7 @@ export const userSlice = createSlice({
                 ...state,
                 user: { ...action.payload },
                 passwordUpdated: false,
+                error: {}
             }
         },
         setErrorMsg: (state, action) => {
