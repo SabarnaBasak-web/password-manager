@@ -4,6 +4,7 @@ const initialState = {
     user: {},
     userCreated: false,
     error: '',
+    passwordUpdated: false,
 }
 
 export const userSlice = createSlice({
@@ -28,7 +29,8 @@ export const userSlice = createSlice({
         setUser: (state, action) => {
             return {
                 ...state,
-                user: { ...action.payload }
+                user: { ...action.payload },
+                passwordUpdated: false,
             }
         },
         setErrorMsg: (state, action) => {
@@ -37,10 +39,16 @@ export const userSlice = createSlice({
                 error: action.payload
             }
         },
+        setPasswordUpdated: (state, action) => {
+            return {
+                ...state,
+                passwordUpdated: action.payload
+            }
+        }
     }
 });
 
 // Action creators are generated for each case reducer function
-export const { setUserCreated, setErrorMsg, setUser } = userSlice.actions
+export const { setUserCreated, setErrorMsg, setUser, setPasswordUpdated } = userSlice.actions
 
 export default userSlice.reducer

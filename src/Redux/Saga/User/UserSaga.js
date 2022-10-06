@@ -1,6 +1,6 @@
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updatePassword } from "firebase/auth";
 import { call, put } from 'redux-saga/effects';
-import { setUserCreated, setErrorMsg, setUser } from "../../Reducers/UserSlice";
+import { setUserCreated, setErrorMsg, setUser, setPasswordUpdated } from "../../Reducers/UserSlice";
 
 
 // functions related to user creation and login to the app
@@ -42,6 +42,20 @@ const logoutUser = async () => {
     return true;
 }
 
+const updatePasswordHandler = async (newPassword) => {
+    const auth = getAuth();
+    const user = auth.currentUser;
+    try {
+        if (user) {
+            await updatePassword(user, newPassword);
+            return true;
+        }
+
+    } catch (error) {
+        console.warn('Some error occured', error.message)
+        return false;
+    }
+}
 
 // Create User handler
 export function* signUpUser({ payload }) {
@@ -78,5 +92,18 @@ export function* logout() {
         }
     } catch (err) {
         yield put(setErrorMsg("Error while logging out "))
+    }
+}
+
+// update user's password
+export function* updateCurrentUserPassword({ payload }) {
+    try {
+        let result = yield call(() => updatePasswordHandler(payload))
+        if (result) {
+            console.log("result", result);
+            yield put(setPasswordUpdated(result));
+        }
+    } catch (err) {
+        console.warn(err);
     }
 }

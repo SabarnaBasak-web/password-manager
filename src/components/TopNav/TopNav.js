@@ -7,25 +7,32 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import { logout } from '../../Redux/Saga/User/UserActions';
 import { clearData } from '../../Redux/Reducers/passwordSlice';
+import PasswordModal from '../Modal/PasswordModal';
 
 function TopNav() {
     const [showDropDown, setShowDropDown] = useState(false);
     const { email, displayName } = useSelector(state => state.userSlice.user);
     const dispatch = useDispatch();
-
+    const [showModal, setShowModal] = useState(false);
+    const onShowModalHandler = () => {
+        setShowModal(true);
+    }
     const onLogoutButtonHandler = () => {
         dispatch(logout());
         dispatch(clearData())
     }
     const DropdownItem = () => {
         return (
-            <div className='dropdown-item'>
-                <ul className='dropdown-item-list'>
-                    <li>Display Name {displayName}</li>
-                    <li >Change Password</li>
-                    <li onClick={onLogoutButtonHandler} >Logout</li>
-                </ul>
-            </div>
+            <>
+                <div className='dropdown-item'>
+                    <ul className='dropdown-item-list'>
+                        <li>Display Name {displayName}</li>
+                        <li onClick={onShowModalHandler}>Change Password</li>
+                        <li onClick={onLogoutButtonHandler} >Logout</li>
+                    </ul>
+                </div>
+                <PasswordModal open={showModal} handleClose={() => setShowModal(false)} />
+            </>
         )
     }
 
