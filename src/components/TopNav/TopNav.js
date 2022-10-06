@@ -5,7 +5,8 @@ import PhonelinkLockIcon from '@mui/icons-material/PhonelinkLock';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
-import { UserActions, logout } from '../../Redux/Saga/User/UserActions';
+import { logout } from '../../Redux/Saga/User/UserActions';
+import { clearData } from '../../Redux/Reducers/passwordSlice';
 
 function TopNav() {
     const [showDropDown, setShowDropDown] = useState(false);
@@ -13,7 +14,8 @@ function TopNav() {
     const dispatch = useDispatch();
 
     const onLogoutButtonHandler = () => {
-        dispatch(logout())
+        dispatch(logout());
+        dispatch(clearData())
     }
     const DropdownItem = () => {
         return (
