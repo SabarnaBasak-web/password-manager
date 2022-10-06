@@ -5,6 +5,11 @@ export const firebaseActions = {
     DELETE_A_PASSWORD: 'DELETE_A_PASSWORD',
 }
 
+export const fetchAllPasswordsForUser = (id) => ({
+    type: firebaseActions.FETCH_ALL_PASSWORDS,
+    payload: id,
+})
+
 export const updateDetails = (payload) => ({
     type: firebaseActions.UPDATE_A_PASSWORD,
     payload,
