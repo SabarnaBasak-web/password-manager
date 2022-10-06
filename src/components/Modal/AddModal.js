@@ -13,7 +13,6 @@ function AddModal({ open, handleClose, createItemHandler }) {
     const [description, setDescription] = useState('');
     const dispatch = useDispatch();
     const { id } = useSelector(state => state.userSlice.user)
-    console.log('LoggedUser', id);
 
     const resetStates = () => {
         setUrl('');
@@ -23,8 +22,6 @@ function AddModal({ open, handleClose, createItemHandler }) {
     }
 
     const createEntryHandler = async () => {
-        console.log("URL", url, ' id', id, ' description', description);
-
         dispatch(createPasswordEntry({ url, password, username, description, id }))
         resetStates();
         handleClose();
