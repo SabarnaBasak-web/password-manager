@@ -33,7 +33,6 @@ const deletePasswordEntry = async (docId) => {
 
 const createPasswordEntry = async ({ url, password, username, description, id }) => {
     const newEntryRef = doc(collection(database, "password-lists"));
-    console.log("UserId", id);
     const encryptedPassword = encryptText(password);
     const createData = {
         url: url,
@@ -47,7 +46,6 @@ const createPasswordEntry = async ({ url, password, username, description, id })
 }
 
 export function* fetchAllPasswordsSaga({ payload }) {
-    console.log("[fetch all passwords] function called", payload);
     try {
         let result = yield call(() => {
             return getAllPasswords(payload);
@@ -63,7 +61,6 @@ export function* fetchAllPasswordsSaga({ payload }) {
 export function* updateDetails({ payload }) {
 
     const { id, ...rest } = payload;
-    console.log("Update details", id, 'rest,', rest);
     try {
         yield call(() => updatePasswordDetail(rest));
         yield fetchAllPasswordsSaga({ payload: id });
@@ -74,7 +71,6 @@ export function* updateDetails({ payload }) {
 
 export function* deleteEntry({ payload }) {
     const { id, docId } = payload;
-    console.log("Delete function called", payload)
     try {
         yield call(() => deletePasswordEntry(docId))
         yield fetchAllPasswordsSaga({ payload: id });
@@ -84,7 +80,6 @@ export function* deleteEntry({ payload }) {
 }
 
 export function* createEntry({ payload }) {
-    console.log("CreateEntry called", payload);
     try {
         yield call(() => createPasswordEntry(payload))
         yield fetchAllPasswordsSaga({ payload: payload.id });
