@@ -15,6 +15,7 @@ export const userSlice = createSlice({
                 return {
                     ...state,
                     userCreated: action.payload.isUserCreated,
+                    error: {},
                 }
             } else {
                 return {

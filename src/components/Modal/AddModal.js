@@ -3,7 +3,7 @@ import { Modal, Box, Button, FormControl, TextField } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import CheckIcon from '@mui/icons-material/Check';
 import './AlertModal.css';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { createPasswordEntry } from '../../Redux/Saga/Firebase/firebaseActions';
 
 function AddModal({ open, handleClose, createItemHandler }) {
@@ -12,6 +12,7 @@ function AddModal({ open, handleClose, createItemHandler }) {
     const [username, setUsername] = useState('');
     const [description, setDescription] = useState('');
     const dispatch = useDispatch();
+    const { id } = useSelector(state => state.userSlice.user)
 
     const resetStates = () => {
         setUrl('');
@@ -21,7 +22,7 @@ function AddModal({ open, handleClose, createItemHandler }) {
     }
 
     const createEntryHandler = async () => {
-        dispatch(createPasswordEntry({ url, password, username, description }))
+        dispatch(createPasswordEntry({ url, password, username, description, id }))
         resetStates();
         handleClose();
     }

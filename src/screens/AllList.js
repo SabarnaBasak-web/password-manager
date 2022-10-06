@@ -17,7 +17,7 @@ import AlertModal from '../components/Modal/AlertModal';
 import CloseIcon from '@mui/icons-material/Close';
 import EmptyList from '../components/EmptyList/EmptyList';
 import { useDispatch, useSelector } from 'react-redux';
-import { firebaseActions, updateDetails, deletePasswordEntry } from '../Redux/Saga/Firebase/firebaseActions';
+import { updateDetails, deletePasswordEntry, fetchAllPasswordsForUser } from '../Redux/Saga/Firebase/firebaseActions';
 
 function AllList() {
   const [shouldEdit, setShouldEdit] = useState(false);
@@ -29,10 +29,11 @@ function AllList() {
 
   const { loading, list } = useSelector(state => state.passwordSlice);
   const dispatch = useDispatch();
+  const { id } = useSelector(state => state.userSlice.user);
 
   useEffect(() => {
-    dispatch({ type: firebaseActions.FETCH_ALL_PASSWORDS })
-  }, [dispatch]);
+    dispatch(fetchAllPasswordsForUser(id));
+  }, [dispatch, id]);
 
   const onEditButtonHandler = (type, docId) => {
     setShouldEdit(true);
@@ -41,17 +42,17 @@ function AllList() {
   }
 
   const onDeleteButtonHandler = useCallback(async (docId) => {
-    dispatch(deletePasswordEntry(docId));
+    dispatch(deletePasswordEntry({ docId, id }));
     setShowModal(false);
-  }, [dispatch]);
+  }, [dispatch, id]);
 
-  const onDoneHandler = async (docId, updateText, type) => {
-    dispatch(updateDetails({ docId, updateText, type }));
+  const onDoneHandler = useCallback(async (docId, updateText, type) => {
+    dispatch(updateDetails({ docId, updateText, type, id }));
     setShouldEdit(false);
     setInputText('');
     setRowId('');
     setShowPassword('');
-  };
+  }, [dispatch, id]);
 
   // handler to render cancel button
   const onCancelHandler = () => {
