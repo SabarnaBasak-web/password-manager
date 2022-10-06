@@ -23,10 +23,17 @@ export const passwordSlice = createSlice({
         loading: false
       }
     },
+    clearData: (state) => {
+      return {
+        ...state,
+        list: [],
+        loading: true,
+      }
+    }
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { fetchData } = passwordSlice.actions
+export const { fetchData, clearData } = passwordSlice.actions
 
 export default passwordSlice.reducer
