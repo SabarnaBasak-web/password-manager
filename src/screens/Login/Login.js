@@ -151,14 +151,6 @@ function Login() {
                             Login
                         </Button>
                     </form>
-                    <Button
-                        variant="outlined"
-                        startIcon={<GoogleIcon />}
-                        className="google-btn"
-                        color="primary"
-                    >
-                        Login with Google
-                    </Button>
                 </>
             )}
         </div>
