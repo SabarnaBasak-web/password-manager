@@ -25,3 +25,20 @@
     font-family: 'Manrope', sans-serif;
     margin-top: 0.8rem;
 }
+
+.modal-error-message{
+    color: red;
+    text-align: center;
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.modal-success-message{
+    color: olivedrab;
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.done-icon{
+    margin-bottom: -5px;
+}

@@ -49,3 +49,17 @@
 .pointer{
     cursor: pointer;
 }
+
+.url-link{
+    cursor: pointer;
+    text-decoration: none;
+    color: royalblue;
+    font-weight: bold;
+}
+
+.url-link:link,
+.url-link:visited,
+.url-link:hover,
+.url-link:active{
+    color: royalblue;
+}

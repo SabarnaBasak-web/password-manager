@@ -2,6 +2,7 @@ export const UserActions = {
     CREATE_USER: 'CREATE_USER',
     LOGIN_USER: 'LOGIN_USER',
     LOGOUT_USER: 'LOGOUT_USER',
+    UPDATE_PASSWORD: 'UPDATE_PASSWORD',
 }
 
 export const signUpUserAction = (payload) => ({
@@ -15,6 +16,10 @@ export const signInUserAction = (payload) => ({
 })
 
 export const logout = () => {
-    console.log("UserActions");
     return { type: UserActions.LOGOUT_USER }
 }
+
+export const updateUserPassword = (payload) => ({
+    type: UserActions.UPDATE_PASSWORD,
+    payload
+})
