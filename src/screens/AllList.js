@@ -68,7 +68,7 @@ function AllList() {
             id={docId}
             variant="standard"
             name={type}
-            value={inputText}
+            value={inputText || renderText}
             placeholder={renderText}
             onChange={e => setInputText(e.target.value)} />
           <DoneIcon className='done-icon' onClick={() => onDoneHandler(docId, inputText, type)} />
